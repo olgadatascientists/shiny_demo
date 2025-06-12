@@ -1,13 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><h1>Shiny App</h1></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shiny App</title>
+    <script
+      src="./shinylive/load-shinylive-sw.js"
+      type="module"
+    ></script>
+    <script type="module">
+      import { runApp } from "./shinylive/shinylive.js";
+      const response = await fetch("./app.json");
+      if (!response.ok) {
+        throw new Error("HTTP error loading app.json: " + response.status);
+      }
+      const appFiles = await response.json();
+
+      const appRoot = document.getElementById("root");
+      runApp(appRoot, "viewer", {startFiles: appFiles}, "r");
+    </script>
+    <link rel="stylesheet" href="./shinylive/style-resets.css" />
+    <link rel="stylesheet" href="./shinylive/shinylive.css" />
   </head>
   <body>
-    <h2>Hello Visitor!</h2>
-    <h3>This page will lead you to a simple shiny app. The app shows car detailed information.</h3>
-    <h3>In order to see that, hover your mouse over the dots on the graph and select some.</h3>
-    <h3> You will see the formated from the raw data details in the table below. </h3>
-    <a href="./app.html"> CLICK HERE</a>
+    <div style="height: 100vh; width: 100vw" id="root"></div>
   </body>
 </html>
